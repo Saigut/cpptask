@@ -1,4 +1,5 @@
-// StudentSys.cpp : ¶¨Òå¿ØÖÆÌ¨Ó¦ÓÃ³ÌĞòµÄÈë¿Úµã¡£
+
+// StudentSys.cpp : å®šä¹‰æ§åˆ¶å°åº”ç”¨ç¨‹åºçš„å…¥å£ç‚¹ã€‚
 //
 
 #include <iostream>
@@ -6,7 +7,9 @@
 #include <iomanip>
 #include <string>
 #include <fstream>
+#include <stdlib.h>
 using namespace std;
+
 class student
 {
 public:
@@ -15,53 +18,53 @@ public:
 		return this;
 	}
 	void setId(int id) {
-		this->id = id; 
+		this->id = id;
 	}
 
 	void setName(string name) {
-		this->name = name; 
+		this->name = name;
 	}
 
 	void setGrade(string grade) {
-		this->grade = grade; 
+		this->grade = grade;
 	}
 
 	void setMath(int Math) {
-		this->Math = Math; 
+		this->Math = Math;
 	}
 
 	void setEnglish(int English) {
-		this->English = English; 
+		this->English = English;
 	}
 
 	void setPE(int PE) {
-		this->PE = PE; 
+		this->PE = PE;
 	}
 
 	int getId() {
-		return id; 
+		return id;
 	}
 
 	string getName() {
-		return name; 
+		return name;
 	}
 
 	string getGrade() {
-		return grade; 
+		return grade;
 	}
 
 	int getMath() {
-		return Math; 
+		return Math;
 	}
 
 	int getEnglish() {
-		return English; 
+		return English;
 	}
 
 	int getPE() {
-		return PE; 
+		return PE;
 	}
-	
+
 
 private:
 	int id;
@@ -77,9 +80,9 @@ public:
 	studentSys(){
 		int a;
 		FILE *stream;
-		if ((stream = fopen("student.dat", "rb")) == NULL) 
+		if ((stream = fopen("student.dat", "rb")) == NULL)
 		{
-			cout<<"µÚÒ»´ÎÔËĞĞÉĞÎ´ÓĞÑ§Éú×ÊÁÏ£¬ÇëÂ¼Èë"<<endl;
+			cout<<"ç¬¬ä¸€æ¬¡è¿è¡Œå°šæœªæœ‰å­¦ç”Ÿèµ„æ–™ï¼Œè¯·å½•å…¥"<<endl;
 			add();
 		}
 else
@@ -90,12 +93,12 @@ else
 				a=fread(temp,sizeof(student),1,stream);
 				if(a==0)break;
 				stu.push_back(*temp);
-				
-			} 
+
+			}
 			fclose(stream);
-			cout<<"ÒÑ¶ÁÈë"<<stu.size()<<"ÌõÑ§ÉúĞÅÏ¢"<<endl;
+			cout<<"å·²è¯»å…¥"<<stu.size()<<"æ¡å­¦ç”Ÿä¿¡æ¯"<<endl;
 		}
-		
+
 	}
 	student* CreatStudent(int id,string name,string grade,int Math,int English,int PE);
 	void save();
@@ -109,9 +112,9 @@ private:
 };
 void studentSys::save(){
 	FILE *stream;
-if ((stream = fopen("student.dat", "wb")) == NULL) 
+if ((stream = fopen("student.dat", "wb")) == NULL)
 {
-	cout<<"±£´æÊ§°Ü"<<endl;
+	cout<<"ä¿å­˜å¤±è´¥"<<endl;
 	return;
 }
 	fwrite(&stu[0],sizeof(student),stu.size(),stream);
@@ -125,22 +128,22 @@ void studentSys::add(){
 	int Math;
 	int English;
 	int PE;
-	cout<<"ÄãÒªÔö¼Ó¶àÉÙ¸öÑ§Éú(ÊäÈë0È¡Ïû)£º";
+	cout<<"ä½ è¦å¢åŠ å¤šå°‘ä¸ªå­¦ç”Ÿ(è¾“å…¥0å–æ¶ˆ)ï¼š";
 	cin>>num;
 	for (int i=0;i<num;i++)
 	{
-		cout<<"ÇëÊäÈëÑ§ÉúÑ§ºÅ¡¢ĞÕÃû¡¢°à¼¶¡¢ÊıÑ§¡¢Ó¢Óï¡¢ÌåÓı³É¼¨£º\nÀı×Ó£º3112007924 ³Â¿¡³© ĞÅ¼Æ1 100 80 78\n>>";
+		cout<<"è¯·è¾“å…¥å­¦ç”Ÿå­¦å·ã€å§“åã€ç­çº§ã€æ•°å­¦ã€è‹±è¯­ã€ä½“è‚²æˆç»©ï¼š\nä¾‹å­ï¼š3112007924 é™ˆä¿Šç•… ä¿¡è®¡1 100 80 78\n>>";
 		cin>>id>>name>>grade>>Math>>English>>PE;
 		student* m_stu=CreatStudent(id,name,grade,Math,English,PE);
 		stu.push_back(*m_stu);
-		cout<<"Ìí¼Ó³É¹¦,Ä¿Ç°ÒÑÓĞ"<<stu.size()<<"ÃûÑ§ÉúĞÅÏ¢"<<endl;
+		cout<<"æ·»åŠ æˆåŠŸ,ç›®å‰å·²æœ‰"<<stu.size()<<"åå­¦ç”Ÿä¿¡æ¯"<<endl;
 		cout<<endl;
 	}
 	save();
 
 }
 void studentSys::query(){
-	cout<<setw(10)<<"Ñ§ºÅ"<<setw(10)<<"ĞÕÃû"<<setw(10)<<"°à¼¶"<<setw(10)<<"ÊıÑ§"<<setw(10)<<"Ó¢Óï"<<setw(10)<<"ÌåÓı"<<endl;
+	cout<<setw(10)<<"å­¦å·"<<setw(10)<<"å§“å"<<setw(10)<<"ç­çº§"<<setw(10)<<"æ•°å­¦"<<setw(10)<<"è‹±è¯­"<<setw(10)<<"ä½“è‚²"<<endl;
 	for (int i=0;i<stu.size();i++)
 	{
 		cout<<setw(10)<<stu[i].getId()<<setw(10)<<stu[i].getName()<<setw(10)<<stu[i].getGrade()<<setw(10)<<stu[i].getMath()<<setw(10)<<stu[i].getEnglish()<<setw(10)<<stu[i].getPE()<<endl;
@@ -169,18 +172,18 @@ void studentSys::update(){
 	int Math;
 	int English;
 	int PE;
-	cout<<"1¡¢ĞŞ¸Ä×ÊÁÏ£¬2¡¢É¾³ı×ÊÁÏ£¬0¡¢È¡Ïû\n>>";
+	cout<<"1ã€ä¿®æ”¹èµ„æ–™ï¼Œ2ã€åˆ é™¤èµ„æ–™ï¼Œ0ã€å–æ¶ˆ\n>>";
 	cin>>mode;
 	if(mode==0)return;
-	cout<<"ÇëÊäÈëÑ§ºÅºÍĞÕÃû£¬ÓÃ¿Õ¸ñ¸ô¿ª£º";
+	cout<<"è¯·è¾“å…¥å­¦å·å’Œå§“åï¼Œç”¨ç©ºæ ¼éš”å¼€ï¼š";
 	cin>>oid>>oname;
 	for (vector<student>::iterator it=stu.begin();it!=stu.end();it++)
 	{
 		if (mode==1&&(*it).getId()==oid&&(*it).getName()==oname)
 		{
-			cout<<setw(10)<<"Ñ§ºÅ"<<setw(10)<<"ĞÕÃû"<<setw(10)<<"°à¼¶"<<setw(10)<<"ÊıÑ§"<<setw(10)<<"Ó¢Óï"<<setw(10)<<"ÌåÓı"<<endl;
+			cout<<setw(10)<<"å­¦å·"<<setw(10)<<"å§“å"<<setw(10)<<"ç­çº§"<<setw(10)<<"æ•°å­¦"<<setw(10)<<"è‹±è¯­"<<setw(10)<<"ä½“è‚²"<<endl;
 			cout<<setw(10)<<(*it).getId()<<setw(10)<<(*it).getName()<<setw(10)<<(*it).getGrade()<<setw(10)<<(*it).getMath()<<setw(10)<<(*it).getEnglish()<<setw(10)<<(*it).getPE()<<endl;
-			cout<<"ÇëÊäÈëÑ§ºÅ¡¢ĞÕÃû¡¢°à¼¶¡¢ÊıÑ§¡¢Ó¢Óï¡¢ÌåÓı³É¼¨£¬ÓÃ¿Õ¸ñ¸ô¿ª£º\n>>";
+			cout<<"è¯·è¾“å…¥å­¦å·ã€å§“åã€ç­çº§ã€æ•°å­¦ã€è‹±è¯­ã€ä½“è‚²æˆç»©ï¼Œç”¨ç©ºæ ¼éš”å¼€ï¼š\n>>";
 			cin>>id>>name>>grade>>Math>>English>>PE;
 			(*it).setEnglish(English);
 			(*it).setId(id);
@@ -188,20 +191,20 @@ void studentSys::update(){
 			(*it).setMath(Math);
 			(*it).setName(name);
 			(*it).setPE(PE);
-			cout<<"ĞŞ¸Ä³É¹¦"<<endl;
-			cout<<setw(10)<<"Ñ§ºÅ"<<setw(10)<<"ĞÕÃû"<<setw(10)<<"°à¼¶"<<setw(10)<<"ÊıÑ§"<<setw(10)<<"Ó¢Óï"<<setw(10)<<"ÌåÓı"<<endl;
+			cout<<"ä¿®æ”¹æˆåŠŸ"<<endl;
+			cout<<setw(10)<<"å­¦å·"<<setw(10)<<"å§“å"<<setw(10)<<"ç­çº§"<<setw(10)<<"æ•°å­¦"<<setw(10)<<"è‹±è¯­"<<setw(10)<<"ä½“è‚²"<<endl;
 			cout<<setw(10)<<(*it).getId()<<setw(10)<<(*it).getName()<<setw(10)<<(*it).getGrade()<<setw(10)<<(*it).getMath()<<setw(10)<<(*it).getEnglish()<<setw(10)<<(*it).getPE()<<endl;
 			break;
 		}else if (mode==2&&(*it).getId()==oid&&(*it).getName()==oname)
 		{
-			cout<<setw(10)<<"Ñ§ºÅ"<<setw(10)<<"ĞÕÃû"<<setw(10)<<"°à¼¶"<<setw(10)<<"ÊıÑ§"<<setw(10)<<"Ó¢Óï"<<setw(10)<<"ÌåÓı"<<endl;
+			cout<<setw(10)<<"å­¦å·"<<setw(10)<<"å§“å"<<setw(10)<<"ç­çº§"<<setw(10)<<"æ•°å­¦"<<setw(10)<<"è‹±è¯­"<<setw(10)<<"ä½“è‚²"<<endl;
 			cout<<setw(10)<<(*it).getId()<<setw(10)<<(*it).getName()<<setw(10)<<(*it).getGrade()<<setw(10)<<(*it).getMath()<<setw(10)<<(*it).getEnglish()<<setw(10)<<(*it).getPE()<<endl;
-			cout<<"ÊÇ·ñÒªÉ¾³ı(y/n) ";
+			cout<<"æ˜¯å¦è¦åˆ é™¤(y/n) ";
 			char b;
 			cin>>b;
 			if (b=='y'){
 				stu.erase(it);
-				cout<<"É¾³ı³É¹¦"<<endl;
+				cout<<"åˆ é™¤æˆåŠŸ"<<endl;
 				cout<<endl;
 			}
 			break;
@@ -217,16 +220,16 @@ void studentSys::mean(){
 		esum+=stu[i].getEnglish();
 		psum+=stu[i].getPE();
 	}
-	cout<<"ÊıÑ§Æ½¾ù·Ö£º"<<msum/stu.size()<<endl;
-	cout<<"Ó¢ÓïÆ½¾ù·Ö£º"<<esum/stu.size()<<endl;
-	cout<<"ÌåÓıÆ½¾ù·Ö£º"<<psum/stu.size()<<endl;
+	cout<<"æ•°å­¦å¹³å‡åˆ†ï¼š"<<msum/stu.size()<<endl;
+	cout<<"è‹±è¯­å¹³å‡åˆ†ï¼š"<<esum/stu.size()<<endl;
+	cout<<"ä½“è‚²å¹³å‡åˆ†ï¼š"<<psum/stu.size()<<endl;
 	cout<<endl;
 
 }
 void studentSys::out(){
 	fstream outfile("student.txt",ios::out);
 	double msum=0,esum=0,psum=0;
-	outfile<<setw(10)<<"Ñ§ºÅ"<<setw(10)<<"ĞÕÃû"<<setw(10)<<"°à¼¶"<<setw(10)<<"ÊıÑ§"<<setw(10)<<"Ó¢Óï"<<setw(10)<<"ÌåÓı"<<endl;
+	outfile<<setw(10)<<"å­¦å·"<<setw(10)<<"å§“å"<<setw(10)<<"ç­çº§"<<setw(10)<<"æ•°å­¦"<<setw(10)<<"è‹±è¯­"<<setw(10)<<"ä½“è‚²"<<endl;
 	for (int i=0;i<stu.size();i++)
 	{
 		msum+=stu[i].getMath();
@@ -235,19 +238,19 @@ void studentSys::out(){
 		outfile<<setw(10)<<stu[i].getId()<<setw(10)<<stu[i].getName()<<setw(10)<<stu[i].getGrade()<<setw(10)<<stu[i].getMath()<<setw(10)<<stu[i].getEnglish()<<setw(10)<<stu[i].getPE()<<endl;
 	}
 	outfile<<endl;
-	outfile<<"ÊıÑ§Æ½¾ù·Ö£º"<<msum/stu.size()<<endl;
-	outfile<<"Ó¢ÓïÆ½¾ù·Ö£º"<<esum/stu.size()<<endl;
-	outfile<<"ÌåÓıÆ½¾ù·Ö£º"<<psum/stu.size()<<endl;
-	cout<<"ÎÄ¼şÒÑÊä³öµ½student.txtÖĞ"<<endl;
+	outfile<<"æ•°å­¦å¹³å‡åˆ†ï¼š"<<msum/stu.size()<<endl;
+	outfile<<"è‹±è¯­å¹³å‡åˆ†ï¼š"<<esum/stu.size()<<endl;
+	outfile<<"ä½“è‚²å¹³å‡åˆ†ï¼š"<<psum/stu.size()<<endl;
+	cout<<"æ–‡ä»¶å·²è¾“å‡ºåˆ°student.txtä¸­"<<endl;
 }
 int main()
 {
-	cout<<"\t\t¡ò¡ï¡ï¡ï¡ï¡¾  »¶Ó­½øÈëÑ§Éú³É¼¨¹ÜÀíÏµÍ³  ¡¿¡ï¡ï¡ï¡ï¡ò"<<endl;
+	cout<<"\t\tâ—â˜…â˜…â˜…â˜…ã€  æ¬¢è¿è¿›å…¥å­¦ç”Ÿæˆç»©ç®¡ç†ç³»ç»Ÿ  ã€‘â˜…â˜…â˜…â˜…â—"<<endl;
 	studentSys admin;
 	bool b=true;
 	int select;
 	while(b){
-	cout<<"1¡¢ÊäÈë¼ÇÂ¼\n2¡¢²éÑ¯¼ÇÂ¼\n3¡¢¸üĞÂ¼ÇÂ¼\n4¡¢Í³¼Æ¼ÇÂ¼\n5¡¢Êä³ö¼ÇÂ¼\n0¡¢ÍË³ö\n>>";
+	cout<<"1ã€è¾“å…¥è®°å½•\n2ã€æŸ¥è¯¢è®°å½•\n3ã€æ›´æ–°è®°å½•\n4ã€ç»Ÿè®¡è®°å½•\n5ã€è¾“å‡ºè®°å½•\n0ã€é€€å‡º\n>>";
 	cin>>select;
 	switch (select)
 	{
@@ -270,7 +273,7 @@ int main()
 		admin.out();
 		break;
 	default:
-		cout<<"ÊäÈë´íÎó"<<endl;
+		cout<<"è¾“å…¥é”™è¯¯"<<endl;
 		break;
 	}
 }

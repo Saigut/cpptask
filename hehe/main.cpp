@@ -1,82 +1,82 @@
 #include<iostream>
-#include<stdio.h>
+//#include<stdio.h>
 using namespace std;
-//******************½á¹¹Ìå¶¨Òå**************//
-typedef struct Worker    //Ñ§Éú½á¹¹Ìå
+//******************ç»“æ„ä½“å®šä¹‰**************//
+typedef struct Worker    //å­¦ç”Ÿç»“æ„ä½“
 {
-	char name[10];      //Ñ§ÉúĞÕÃû
-	int no;             //Ñ§Éú¹¤ºÅ
-	char depno[20];     //Ñ§Éú°à¼¶
-	int math;           //Ñ§ÉúÊıÑ§³É¼¨
-	int english;        //Ñ§ÉúÓ¢Óï³É¼¨
-	int salary;         //Ñ§ÉúÌåÓı³É¼¨
+	char name[10];      //å­¦ç”Ÿå§“å
+	int no;             //å­¦ç”Ÿå·¥å·
+	char depno[20];     //å­¦ç”Ÿç­çº§
+	int math;           //å­¦ç”Ÿæ•°å­¦æˆç»©
+	int english;        //å­¦ç”Ÿè‹±è¯­æˆç»©
+	int salary;         //å­¦ç”Ÿä½“è‚²æˆç»©
 
 	struct Worker * next;
 }Linkworker;
-typedef struct No      //pnoÁ´½á¹¹Ìå
+typedef struct No      //pnoé“¾ç»“æ„ä½“
 {
 	int no;
 	struct No *next;
 }Linkno;
 
-typedef struct Salary   //psalaryÁ´½á¹¹Ìå
+typedef struct Salary   //psalaryé“¾ç»“æ„ä½“
 {
 	int salary;
 	int no;
 	struct Salary *next;
 }Linksalary;
 
-typedef struct Math   //pmathÁ´½á¹¹Ìå
+typedef struct Math   //pmathé“¾ç»“æ„ä½“
 {
 	int salary;
 	int no;
 	struct Math *next;
 }Linkmath;
 
-typedef struct English   //penglishÁ´½á¹¹Ìå
+typedef struct English   //penglishé“¾ç»“æ„ä½“
 {
 	int salary;
 	int no;
 	struct English *next;
 }Linkenglish;
 
-//**************************************³õÊ¼»¯*************************************************//
+//**************************************åˆå§‹åŒ–*************************************************//
 
-void Initworker(Linkworker *&worker)//Ñ§Éú½á¹¹ÌåµÄ³õÊ¼»¯
+void Initworker(Linkworker *&worker)//å­¦ç”Ÿç»“æ„ä½“çš„åˆå§‹åŒ–
 {
 	worker=(Linkworker *)malloc(sizeof(Linkworker));
 	worker->next=NULL;
 }
 void Initno(Linkno *&dpno)
 {
-	dpno=(Linkno *)malloc(sizeof(Linkno));  //pno½á¹¹ÌåµÄ³õÊ¼»¯
+	dpno=(Linkno *)malloc(sizeof(Linkno));  //pnoç»“æ„ä½“çš„åˆå§‹åŒ–
 	dpno->next=NULL;
 }
 
-void Initsalary(Linksalary *&salary)  //psalary½á¹¹ÌåµÄ³õÊ¼»¯
+void Initsalary(Linksalary *&salary)  //psalaryç»“æ„ä½“çš„åˆå§‹åŒ–
 {
 	salary=(Linksalary *)malloc(sizeof(Linksalary));
 	salary->next=NULL;
 }
-void Initmath(Linkmath *&math)  //pmath½á¹¹ÌåµÄ³õÊ¼»¯
+void Initmath(Linkmath *&math)  //pmathç»“æ„ä½“çš„åˆå§‹åŒ–
 {
 	math=(Linkmath *)malloc(sizeof(Linkmath));
 	math->next=NULL;
 }
-void Initenglish(Linkenglish *&english)  //penglish½á¹¹ÌåµÄ³õÊ¼»¯
+void Initenglish(Linkenglish *&english)  //penglishç»“æ„ä½“çš„åˆå§‹åŒ–
 {
 	english=(Linkenglish *)malloc(sizeof(Linkenglish));
 	english->next=NULL;
 }
 
 
-//***********************************Ö÷ÒªµÄº¯Êı·½·¨*******************************************//
-void readFile(FILE *fp,Linkworker *&p)//´ÓÎÄ¼şÖĞ¶ÁÈ¡Êı¾İµ½µ¥Á´±íÀï
+//***********************************ä¸»è¦çš„å‡½æ•°æ–¹æ³•*******************************************//
+void readFile(FILE *fp,Linkworker *&p)//ä»æ–‡ä»¶ä¸­è¯»å–æ•°æ®åˆ°å•é“¾è¡¨é‡Œ
 {
 	Linkworker *s;
 	if((fp=fopen("zg.txt","r"))==NULL)
 	{
-		printf("Ã»ÓĞ·¢ÏÖÎÄ¼ş\n");
+		printf("æ²¡æœ‰å‘ç°æ–‡ä»¶\n");
 		return;
 	}
 	while(true)
@@ -93,11 +93,11 @@ void readFile(FILE *fp,Linkworker *&p)//´ÓÎÄ¼şÖĞ¶ÁÈ¡Êı¾İµ½µ¥Á´±íÀï
 void deleteworker(Linkworker *&worker)
 {
 }
-void Addworker(Linkworker *&worker)//Ôö¼ÓÑ§Éú¼ÇÂ¼
+void Addworker(Linkworker *&worker)//å¢åŠ å­¦ç”Ÿè®°å½•
 {
 	Linkworker *s,*p=worker;
-	printf("******ÇëÊäÈëÒªÔö¼ÓµÄÑ§Éú¼ÇÂ¼*******\n");
-	printf("Ñ§ºÅ    ĞÕÃû     °à¼¶      ÊıÑ§     Ó¢Óï   ÌåÓı\n");
+	printf("******è¯·è¾“å…¥è¦å¢åŠ çš„å­¦ç”Ÿè®°å½•*******\n");
+	printf("å­¦å·    å§“å     ç­çº§      æ•°å­¦     è‹±è¯­   ä½“è‚²\n");
     //while(p->next!=NULL)
 		//p=p->next;
 	s=(Linkworker *)malloc(sizeof(Linkworker));
@@ -107,7 +107,7 @@ void Addworker(Linkworker *&worker)//Ôö¼ÓÑ§Éú¼ÇÂ¼
 	p->next=NULL;
 }
 
-int LocateElem(Linkworker *worker,int no) //²éÕÒÑ§ºÅÔÚÁ´±íµÄÎ»ÖÃ
+int LocateElem(Linkworker *worker,int no) //æŸ¥æ‰¾å­¦å·åœ¨é“¾è¡¨çš„ä½ç½®
 {
 	Linkworker *p=worker->next;
 	int i=1;
@@ -122,7 +122,7 @@ int LocateElem(Linkworker *worker,int no) //²éÕÒÑ§ºÅÔÚÁ´±íµÄÎ»ÖÃ
 		return i;
 }
 
-void DeleteWorker(Linkworker *worker,int no)//É¾³ıÑ§ÉúÁ´±íµÄÊı¾İ
+void DeleteWorker(Linkworker *worker,int no)//åˆ é™¤å­¦ç”Ÿé“¾è¡¨çš„æ•°æ®
 {
 	if(no==0)
 	{
@@ -142,7 +142,7 @@ void DeleteWorker(Linkworker *worker,int no)//É¾³ıÑ§ÉúÁ´±íµÄÊı¾İ
 	Linkworker *q;
 	if(p==NULL)
 	{
-		printf("¿Õ£¬²»ÄÜÉ¾³ı");
+		printf("ç©ºï¼Œä¸èƒ½åˆ é™¤");
 		return;
 	}
 	int j=0;
@@ -165,7 +165,7 @@ void DeleteWorker(Linkworker *worker,int no)//É¾³ıÑ§ÉúÁ´±íµÄÊı¾İ
 
 }
 
-void updateWorker(Linkworker *worker,int no)  //ĞŞ¸ÄÊı¾İ
+void updateWorker(Linkworker *worker,int no)  //ä¿®æ”¹æ•°æ®
 {
 	Linkworker *p=worker->next;
 	while(p!=NULL && p->no!=no)
@@ -174,23 +174,23 @@ void updateWorker(Linkworker *worker,int no)  //ĞŞ¸ÄÊı¾İ
 	}
 	if(p!=NULL)
 	{
-	   printf("Ñ§ºÅ:");
+	   printf("å­¦å·:");
 		 cin>>p->no;
-	   printf("ĞÕÃû:");
+	   printf("å§“å:");
 		 cin>>p->name;
-       printf("°à¼¶:");
+       printf("ç­çº§:");
 		cin>>p->depno;
-	   printf("ÊıÑ§:");
+	   printf("æ•°å­¦:");
 		cin>>p->math;
-	    printf("Ó¢Óï:");
+	    printf("è‹±è¯­:");
 		cin>>p->english;
-		printf("ÌåÓı:");
+		printf("ä½“è‚²:");
 		cin>>p->salary;
 
 	}
 }
 
-void tongjiworker(Linkworker *worker)   //Í³¼Æ
+void tongjiworker(Linkworker *worker)   //ç»Ÿè®¡
 {
 	Linkworker *p=worker->next;
 	int max_math=p->math;
@@ -215,28 +215,28 @@ void tongjiworker(Linkworker *worker)   //Í³¼Æ
 			nopass_salary++;
 		p=p->next;
 	}
-	printf("ÊıÑ§×î¸ß·Ö Ó¢Óï×î¸ß·Ö ÌåÓı×î¸ß·Ö ÊıÑ§²»¼°¸ñÈËÊı Ó¢Óï²»¼°¸ñÈËÊı ÌåÓı²»¼°¸ñÈËÊı ");
+	printf("æ•°å­¦æœ€é«˜åˆ† è‹±è¯­æœ€é«˜åˆ† ä½“è‚²æœ€é«˜åˆ† æ•°å­¦ä¸åŠæ ¼äººæ•° è‹±è¯­ä¸åŠæ ¼äººæ•° ä½“è‚²ä¸åŠæ ¼äººæ•° ");
     printf("%9d%9d%9d%15d%15d%15d\n",max_math,max_english,max_salary,nopass_math,nopass_english,nopass_salary);
 
 }
 
-void DispWorker(Linkworker *worker)//Êä³öÑ§ÉúÁ´±íµÄÊı¾İ
+void DispWorker(Linkworker *worker)//è¾“å‡ºå­¦ç”Ÿé“¾è¡¨çš„æ•°æ®
 {
 	Linkworker *p=worker->next;
-	printf("********Êä³öµ¥Á´±íÀïµÄÊı¾İ:*******\n");
+	printf("********è¾“å‡ºå•é“¾è¡¨é‡Œçš„æ•°æ®:*******\n");
 		if(p==NULL)
 	{
-		printf("<<Ö°¹¤Á´±íÎª¿Õ:\n");
+		printf("<<èŒå·¥é“¾è¡¨ä¸ºç©º:\n");
 		return;
 	}
-	printf("Ñ§ ºÅ     ĞÕ Ãû       °à ¼¶        Êı Ñ§     Ó¢ Óï     Ìå Óı\n");
+	printf("å­¦ å·     å§“ å       ç­ çº§        æ•° å­¦     è‹± è¯­     ä½“ è‚²\n");
 	while(p!=NULL)
 	{
 		printf("%d%13s%15s%9d%9d%9d\n",p->no,p->name,p->depno,p->math,p->english,p->salary);
 		p=p->next;
 	}
 }
-void sort_pno(Linkworker *worker,Linkno *&dpno)//°´noÅÅĞò
+void sort_pno(Linkworker *worker,Linkno *&dpno)//æŒ‰noæ’åº
 {
 	Linkworker *p=worker->next;
 	Linkno *pno=dpno,*s;
@@ -267,18 +267,18 @@ void sort_pno(Linkworker *worker,Linkno *&dpno)//°´noÅÅĞò
 		}
 	}
 }
-void Disp_no(Linkworker *worker,Linkno *dpno)//°´noÅÅĞòÊä³ö
+void Disp_no(Linkworker *worker,Linkno *dpno)//æŒ‰noæ’åºè¾“å‡º
 {
 	Linkno *no=dpno->next;
 	Linkworker *p;
 	if(no==NULL)
 	{
-		printf("<<Ã»ÓĞ°´noÅÅĞò£¬ÇëÏÈÅÅĞòÔÙÊä³ö:\n");
+		printf("<<æ²¡æœ‰æŒ‰noæ’åºï¼Œè¯·å…ˆæ’åºå†è¾“å‡º:\n");
 	}
 	else
 	{
-        printf("*******°´noÊä³ö¡£ÑØpnoÁ´Êä³öÈ«²¿Ñ§Éú¼ÇÂ¼¡£:*******\n");
-		printf("  Ñ§ºÅ    ĞÕÃû     °à¼¶     ÊıÑ§      Ó¢Óï     ÌåÓı\n");
+        printf("*******æŒ‰noè¾“å‡ºã€‚æ²¿pnoé“¾è¾“å‡ºå…¨éƒ¨å­¦ç”Ÿè®°å½•ã€‚:*******\n");
+		printf("  å­¦å·    å§“å     ç­çº§     æ•°å­¦      è‹±è¯­     ä½“è‚²\n");
 		while(no!=NULL)
 		{
 			p=worker->next;
@@ -291,16 +291,16 @@ void Disp_no(Linkworker *worker,Linkno *dpno)//°´noÅÅĞòÊä³ö
 }
 
 
-void clear(FILE *fp)//Çå³ıÎÄ¼şÊı¾İ
+void clear(FILE *fp)//æ¸…é™¤æ–‡ä»¶æ•°æ®
 {
 	if((fp=fopen("zg.txt","w"))=NULL)
 	{
-		printf("ÎÄ±¾Çå¿Õ\n");
+		printf("æ–‡æœ¬æ¸…ç©º\n");
 		return;
 	}
-	printf("<<ÎÄ¼şÒÑ¾­Çå¿Õ\n");
+	printf("<<æ–‡ä»¶å·²ç»æ¸…ç©º\n");
 }
-void SaveOut(Linkworker *L , FILE *fs)//±£´æÁ´±íÊı¾İµ½ÎÄ±¾Àï
+void SaveOut(Linkworker *L , FILE *fs)//ä¿å­˜é“¾è¡¨æ•°æ®åˆ°æ–‡æœ¬é‡Œ
 {
 	char tempbuf[30];
 
@@ -311,7 +311,7 @@ void SaveOut(Linkworker *L , FILE *fs)//±£´æÁ´±íÊı¾İµ½ÎÄ±¾Àï
 		fwrite(tempbuf,strlen(tempbuf),1,fs);
 		p=p->next;
 	}
-	printf("<<ÍË³ö³ÌĞò\n");
+	printf("<<é€€å‡ºç¨‹åº\n");
 }
 void main()
 {
@@ -325,19 +325,19 @@ void main()
 	p=w;
 	FILE *fp;
 	readFile(fp,p);
-    printf("1.ÊäÈë¡£Ìí¼ÓÒ»¸öÑ§Éú¼ÇÂ¼¡£\n"
-    "2.Êä³ö¡£Êä³öÈ«²¿Ñ§Éú¼ÇÂ¼¡£\n"
-    "3.°´Ñ§ºÅÅÅĞò¡£Í¨¹ıpnoÖ¸Õë½«Ñ§Éú¼ÇÂ¼°´Ñ§ºÅo´ÓĞ¡µ½´óÁ´½ÓÆğÀ´¡£\n"
-    "4.°´Ñ§ºÅÊä³ö¡£ÑØpnoÁ´Êä³öÈ«²¿Ñ§Éú¼ÇÂ¼¡£\n"
-	"5.Í³¼Æ¡£Í³¼ÆËùÓĞ¿ÆÄ¿×î¸ß·ÖÓë²»¼°¸ñÈËÊı¡£\n"
-	"6.É¾³ı¡£°´Ñ§ºÅÉ¾³ı¸ÃÉúËùÓĞ¼ÇÂ¼.\n"
-	"7.ĞŞ¸Ä¡£°´Ñ§ºÅĞŞ¸Ä¸ÃÉúµÄ¼ÇÂ¼.\n"
-    "9.È«Çå¡£É¾³ıÑ§ÉúÎÄ¼şÖĞµÄÈ«²¿¼ÇÂ¼¡£\n"
-    "0.±£´æÍË³ö\n");
+    printf("1.è¾“å…¥ã€‚æ·»åŠ ä¸€ä¸ªå­¦ç”Ÿè®°å½•ã€‚\n"
+    "2.è¾“å‡ºã€‚è¾“å‡ºå…¨éƒ¨å­¦ç”Ÿè®°å½•ã€‚\n"
+    "3.æŒ‰å­¦å·æ’åºã€‚é€šè¿‡pnoæŒ‡é’ˆå°†å­¦ç”Ÿè®°å½•æŒ‰å­¦å·oä»å°åˆ°å¤§é“¾æ¥èµ·æ¥ã€‚\n"
+    "4.æŒ‰å­¦å·è¾“å‡ºã€‚æ²¿pnoé“¾è¾“å‡ºå…¨éƒ¨å­¦ç”Ÿè®°å½•ã€‚\n"
+	"5.ç»Ÿè®¡ã€‚ç»Ÿè®¡æ‰€æœ‰ç§‘ç›®æœ€é«˜åˆ†ä¸ä¸åŠæ ¼äººæ•°ã€‚\n"
+	"6.åˆ é™¤ã€‚æŒ‰å­¦å·åˆ é™¤è¯¥ç”Ÿæ‰€æœ‰è®°å½•.\n"
+	"7.ä¿®æ”¹ã€‚æŒ‰å­¦å·ä¿®æ”¹è¯¥ç”Ÿçš„è®°å½•.\n"
+    "9.å…¨æ¸…ã€‚åˆ é™¤å­¦ç”Ÿæ–‡ä»¶ä¸­çš„å…¨éƒ¨è®°å½•ã€‚\n"
+    "0.ä¿å­˜é€€å‡º\n");
 	while(t1)
 	{
 		printf("************************************************\n");
-		printf("ÇëÊäÈëÑ¡Ôñ:");
+		printf("è¯·è¾“å…¥é€‰æ‹©:");
 		cin>>t2;
 		switch(t2)
 		{
@@ -355,7 +355,7 @@ void main()
 			{
 				sort_pno(w,dpno);
 
-				printf("<<ÒÑ°´Ñ§ºÅÅÅĞò\n");
+				printf("<<å·²æŒ‰å­¦å·æ’åº\n");
 				break;
 			}
 		case 4:
@@ -372,7 +372,7 @@ void main()
 		case 6:
 			{
 				int no2;
-               printf("ÇëÊäÈëÄãÒªÉ¾³ıµÄÑ§ºÅ");
+               printf("è¯·è¾“å…¥ä½ è¦åˆ é™¤çš„å­¦å·");
 				   cin>>no2;
 				int loca=LocateElem(w,no2);
 				DeleteWorker(w,loca-1);
@@ -381,7 +381,7 @@ void main()
 		case 7:
 			{
 				int no2;
-               printf("ÇëÊäÈëÄãÒªĞŞ¸ÄµÄÑ§ºÅ");
+               printf("è¯·è¾“å…¥ä½ è¦ä¿®æ”¹çš„å­¦å·");
 				   cin>>no2;
 				updateWorker(w,no2);
 				break;
