@@ -1,5 +1,6 @@
 #include<iostream>
-//#include<stdio.h>
+#include<stdio.h>
+#include<stdlib.h>
 using namespace std;
 //******************结构体定义**************//
 typedef struct Worker    //学生结构体
