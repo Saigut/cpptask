@@ -18,12 +18,9 @@ void Student::setData()
     cout<<"请按顺序输入学号、姓名、班级(如: (12)信计1)、数学成绩、英语成绩、体育成绩，各项用空格隔开"<<endl<<">>";
     cin>>stuID>>name>>gclass>>mathScore>>englishScore>>phyScore>>setiosflags(ios_base::unitbuf);
 
-    cout<<"hello"<<endl;
     str.assign(stuID);
-    cout<<"2"<<endl<<str.length()<<endl;
     while (str.length() != 10)
     {
-
         cout<<"学号长度有误，请重新输入学号>>";
         cin>>stuID;
         str.assign(stuID);
@@ -31,7 +28,6 @@ void Student::setData()
     str.assign(name);
     while((str.length() < 1) || (str.length() > 20))
     {
-
         cout<<"姓名过长或未输入，请重新输入姓名>>";
         cin>>name;
         str.assign(name);
@@ -39,7 +35,6 @@ void Student::setData()
     str.assign(gclass);
     while((str.length() < 1) || (str.length() > 20))
     {
-
         cout<<"班级输入过长或未输入，请重新输入班级>>";
         cin>>gclass;
         str.assign(gclass);
@@ -124,7 +119,7 @@ void StudentList::readFromFile()
     if(readDB)
     {
         cout<<"打开数据文件成功!"<<endl;
-        if(readDB.eofbit)
+        if(readDB.eof() != true)
         {
             cout<<"正在读取"<<endl;
             HeadPtr = new Student;
@@ -145,13 +140,15 @@ void StudentList::readFromFile()
         readDB.close();
     }
     else
-        cout<<"打开文件失败"<<endl;
+        cout<<"打开文件失败或没有数据文件"<<endl;
 }
 void StudentList::saveToFile()
 {
-    ofstream saveDB ("StuDB.dat", ios_base::out | ios_base::binary);
-    if (HeadPtr != NULL)
+    ifstream readDB("StuDB.dat", ios_base::in | ios_base::binary);
+    if (readDB || (HeadPtr != NULL))
     {
+        ofstream saveDB ("StuDB.dat", ios_base::out | ios_base::binary);
+
         cout<<endl<<"正在保存数据"<<endl;
         CurPtr = HeadPtr;
         for(int i =1; CurPtr!= NULL; CurPtr = CurPtr->getNext())
@@ -161,8 +158,10 @@ void StudentList::saveToFile()
             i++;
         }
         cout<<endl<<"保存完成"<<endl;
-    }
     saveDB.close();
+    if(readDB)
+        readDB.close();
+    }
 }
 void StudentList::addStu()
 {
