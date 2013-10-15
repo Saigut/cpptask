@@ -59,7 +59,6 @@ private:
     Student * HeadPtr;
     Student * CurPtr;
     Student * NextPtr;
-    long StuNumber;
 };
 
 void welcome();

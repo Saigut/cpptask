@@ -1,12 +1,12 @@
 # depslib dependency file v1.0
-1381803418 source:/home/saigut/Files/cpp/cpptask/fortest/main.cpp
+1381840556 source:/home/saigut/Files/cpp/cpptask/fortest/main.cpp
 	<iostream>
 	<fstream>
 	"class.cpp"
 
-1381808087 /home/saigut/Files/cpp/cpptask/fortest/head.h
+1381845797 /home/saigut/Files/cpp/cpptask/fortest/head.h
 
-1381814656 /home/saigut/Files/cpp/cpptask/fortest/class.cpp
+1381856016 /home/saigut/Files/cpp/cpptask/fortest/class.cpp
 	<iostream>
 	<fstream>
 	<string>

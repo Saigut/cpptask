@@ -111,7 +111,6 @@ StudentList::StudentList()
     HeadPtr = NULL;
     CurPtr = NULL;
     NextPtr = NULL;
-    StuNumber = 0;
 }
 void StudentList::readFromFile()
 {
@@ -119,8 +118,11 @@ void StudentList::readFromFile()
     if(readDB)
     {
         cout<<"打开数据文件成功!"<<endl;
-        if(readDB.eof() != true)
+        readDB.seekg(0, ios::end);
+        if(readDB.tellg() != 0)
         {
+            readDB.clear();
+            readDB.seekg(0);
             cout<<"正在读取"<<endl;
             HeadPtr = new Student;
             readDB.read(reinterpret_cast<char *>(HeadPtr), sizeof(Student));
@@ -144,12 +146,10 @@ void StudentList::readFromFile()
 }
 void StudentList::saveToFile()
 {
-    ifstream readDB("StuDB.dat", ios_base::in | ios_base::binary);
-    if (readDB || (HeadPtr != NULL))
+    ofstream saveDB ("StuDB.dat", ios_base::out | ios_base::binary);
+    cout<<endl<<"正在保存数据"<<endl;
+    if (HeadPtr != NULL)
     {
-        ofstream saveDB ("StuDB.dat", ios_base::out | ios_base::binary);
-
-        cout<<endl<<"正在保存数据"<<endl;
         CurPtr = HeadPtr;
         for(int i =1; CurPtr!= NULL; CurPtr = CurPtr->getNext())
         {
@@ -157,11 +157,11 @@ void StudentList::saveToFile()
             saveDB.write(reinterpret_cast<char *>(CurPtr), sizeof(Student));
             i++;
         }
-        cout<<endl<<"保存完成"<<endl;
-    saveDB.close();
-    if(readDB)
-        readDB.close();
     }
+    else
+        saveDB.write(NULL, 0);
+    cout<<endl<<"保存完成"<<endl;
+    saveDB.close();
 }
 void StudentList::addStu()
 {
@@ -174,7 +174,6 @@ void StudentList::addStu()
         CurPtr = HeadPtr;
         for ( ; (CurPtr->getNext() != NULL); CurPtr = CurPtr->getNext()) ;
         CurPtr->setNext(newStuPtr);
-        StuNumber++;
         cout<<"添加成功"<<endl;
     }
 }
@@ -189,7 +188,7 @@ void StudentList::updateStu()
     {
         for (CurPtr = HeadPtr; (CurPtr->getNext() != NULL) && (ID.assign(CurPtr->getStuID()) != uID); CurPtr = CurPtr->getNext()) ;
 
-        if(CurPtr != NULL)
+        if(ID == uID)
         {
             CurPtr->setData();
             cout<<"更新信息成功"<<endl;
@@ -200,51 +199,46 @@ void StudentList::updateStu()
 }
 void StudentList::searchStu()
 {
-    char choice, i=1, j;
+    char choice, i=1;
 
-    while ( i != 0)
+    cout<< endl<<"请选择按照哪种方式查找:"<<endl;
+    cout<<"(i)学号，(n)姓名，(c)班级，(m)数学成绩，(e)英语成绩，(p)体育成绩，(k)返回主菜单"<<endl<<">>";
+    while (i != 0)
     {
-        j = 1;
-        cout<< endl<<"请选择按照哪种方式查找:"<<endl;
-        cout<<"(i)学号，(n)姓名，(c)班级，(m)数学成绩，(e)英语成绩，(p)体育成绩，(k)返回主菜单"<<endl<<">>";
-        while (j != 0)
-        {
-            cin>>choice>>setiosflags(ios_base::unitbuf);
+        cin>>choice>>setiosflags(ios_base::unitbuf);
 
-            switch (choice)
-            {
-            case 'i':
-                searchID();
-                j = 0;
-                break;
-            case 'n':
-                searchName();
-                j = 0;
-                break;
-            case 'c':
-                searchGclass();
-                j = 0;
-                break;
-            case 'm':
-                searchMath();
-                j = 0;
-                break;
-            case 'e':
-                searchEng();
-                j = 0;
-                break;
-            case 'p':
-                searchPhy();
-                j = 0;
-                break;
-            case 'k':
-                j = 0;
-                i = 0;
-                break;
-            default:
-                cout<<"请选择正确的选项>>";
-                break;
-            }
+        switch (choice)
+        {
+        case 'i':
+            searchID();
+            i = 0;
+            break;
+        case 'n':
+            searchName();
+            i = 0;
+            break;
+        case 'c':
+            searchGclass();
+            i = 0;
+            break;
+        case 'm':
+            searchMath();
+            i = 0;
+            break;
+        case 'e':
+            searchEng();
+            i = 0;
+            break;
+        case 'p':
+            searchPhy();
+            i = 0;
+            break;
+        case 'k':
+            i = 0;
+            break;
+        default:
+            cout<<"请选择正确的选项>>";
+            break;
         }
     }
 }
@@ -258,15 +252,19 @@ void StudentList::deleteStu()
         cout<<"还没有录入任何学生信息!"<<endl;
     else
     {
-        for (NextPtr = HeadPtr->getNext(); (NextPtr->getNext() != NULL) && (ID.assign(NextPtr->getStuID()) !=dID); )
+        for (CurPtr = NULL, NextPtr = HeadPtr; (NextPtr->getNext() != NULL) && (ID.assign(NextPtr->getStuID()) !=dID); )
         {
             CurPtr = NextPtr;
             NextPtr = NextPtr->getNext();
         }
-        if (NextPtr->getStuID() ==dID)
+        if (NextPtr->getStuID() == dID)
         {
-            CurPtr->setNext(NextPtr->getNext());
-            StuNumber--;
+            if(CurPtr == NULL)
+            {
+                HeadPtr = NextPtr->getNext();
+            }
+            else
+                CurPtr->setNext(NextPtr->getNext());
             delete NextPtr;
             cout<<"删除成功"<<endl;
         }
