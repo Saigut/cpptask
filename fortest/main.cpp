@@ -1,12 +1,12 @@
 #include <iostream>
 #include <fstream>
-#include "class.cpp"
+#include "head.h"
 
 using namespace std;
 
 
 int main()
- {
+{
     welcome();
     StudentList StuDB;
     StuDB.readFromFile();
