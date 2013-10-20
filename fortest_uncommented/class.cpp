@@ -6,64 +6,11 @@
 
 using namespace std;
 
-/*****以下是对学生类的成员函数的定义*****/
+//以下是对Student类的成员函数的定义
 Student::Student()
 {
     next = NULL;
 }
-
-//以下部分为各种获取学生信息的函数的定义
-void Student::getData()
-{
-    cout<<stuID<<"\t"<<name<<"\t"<<gclass<<"\t"<<mathScore<<"\t"<<englishScore<<"\t"<<phyScore<<endl;
-}
-
-char * Student::getStuID()
-{
-    return stuID;
-}
-
-char * Student::getName()
-{
-    return name;
-}
-
-char * Student::getGclass()
-{
-    return gclass;
-}
-
-int Student::getMathScore()
-{
-    return mathScore;
-}
-
-int Student::getEnglishScore()
-{
-    return englishScore;
-}
-
-int Student::getPhyscore()
-{
-    return phyScore;
-}
-
-void Student::getMath()
-{
-    cout<<mathScore<<"\t"<<name<<"\t"<<gclass<<"\t"<<stuID<<endl;
-}
-
-void Student::getEnglish()
-{
-    cout<<englishScore<<"\t"<<name<<"\t"<<gclass<<"\t"<<stuID<<endl;
-}
-
-void  Student::getPhy()
-{
-    cout<<phyScore<<"\t"<<name<<"\t"<<gclass<<"\t"<<stuID<<endl;
-}
-
-//以下部分为各种设置学生信息的函数的定义
 void Student::setData()
 {
     string str;
@@ -71,58 +18,88 @@ void Student::setData()
     cout<<"请按顺序输入学号、姓名、班级(如: (12)信计1)、数学成绩、英语成绩、体育成绩，各项用空格隔开"<<endl<<">>";
     cin>>stuID>>name>>gclass>>mathScore>>englishScore>>phyScore>>setiosflags(ios_base::unitbuf);
 }
-
+void Student::setNext(Student * ptr)
+{
+    next = ptr;
+}
+void Student::getData()
+{
+    cout<<stuID<<"\t"<<name<<"\t"<<gclass<<"\t"<<mathScore<<"\t"<<englishScore<<"\t"<<phyScore<<endl;
+}
+char * Student::getStuID()
+{
+    return stuID;
+}
+char * Student::getName()
+{
+    return name;
+}
+char * Student::getGclass()
+{
+    return gclass;
+}
+int Student::getMathScore()
+{
+    return mathScore;
+}
+int Student::getEnglishScore()
+{
+    return englishScore;
+}
+int Student::getPhyscore()
+{
+    return phyScore;
+}
+Student * Student::getNext()
+{
+    return next;
+}
 void Student::setStuID()
 {
     cin>>stuID;
 }
-
 void Student::setName()
 {
     cin>>name;
 }
-
 void Student::setGclass()
 {
     cin>>gclass;
 }
-
 void Student::setMathScore()
 {
     cin>>mathScore;
 }
-
 void Student::setEnglishScore()
 {
     cin>>englishScore;
 }
-
 void Student::setPhyScore()
 {
     cin>>phyScore;
 }
 
-//以下是关于学生结点指针的函数
-Student * Student::getNext()
+void Student::getMath()
 {
-    return next;
+    cout<<mathScore<<"\t"<<name<<"\t"<<gclass<<"\t"<<stuID<<endl;
 }
-void Student::setNext(Student * ptr)
+void Student::getEnglish()
 {
-    next = ptr;
+    cout<<englishScore<<"\t"<<name<<"\t"<<gclass<<"\t"<<stuID<<endl;
+}
+void  Student::getPhy()
+{
+    cout<<phyScore<<"\t"<<name<<"\t"<<gclass<<"\t"<<stuID<<endl;
 }
 
 
-
-/*****以下是对学生链表类的成员函数的定义*****/
+//以下是对StudentList类的成员函数的定义
 StudentList::StudentList()
 {
     HeadPtr = NULL;
     CurPtr = NULL;
     NextPtr = NULL;
 }
-
-//文件操作函数的定义
 void StudentList::readFromFile()
 {
     ifstream readDB("StuDB.dat", ios_base::in | ios_base::binary);
@@ -155,7 +132,6 @@ void StudentList::readFromFile()
     else
         cout<<"打开文件失败或没有数据文件"<<endl;
 }
-
 void StudentList::saveToFile()
 {
     ofstream saveDB ("StuDB.dat", ios_base::out | ios_base::binary);
@@ -175,13 +151,15 @@ void StudentList::saveToFile()
     cout<<endl<<"保存完成"<<endl;
     saveDB.close();
 }
-
-//各种对学生操作的函数的定义
 void StudentList::addStu()
 {
+    string str;
     Student * newStuPtr = new Student;
     newStuPtr->setData();
+    cout<<"haven't checked"<<endl;
     checkStu(newStuPtr);
+    cout<<"checked"<<endl;
+    cout<<str<<endl;
     if (HeadPtr == NULL)
     {
         HeadPtr = newStuPtr;
@@ -195,7 +173,6 @@ void StudentList::addStu()
         cout<<"添加成功"<<endl;
     }
 }
-
 void StudentList::updateStu()
 {
     string uID, ID;
@@ -217,7 +194,6 @@ void StudentList::updateStu()
             cout<<"没有这个学号的信息!"<<endl;
     }
 }
-
 void StudentList::searchStu()
 {
     char choice, i=1;
@@ -328,18 +304,18 @@ void StudentList::checkStu(Student * CurStu)
     str.assign(CurStu->getStuID());
     while((str.length() != 10) || (checkID(str) == false))
     {
-        while (str.length() != 10)
-        {
-            cout<<"学号长度有误，请重新输入学号>>";
-            cin>>CurStu->getStuID();
-            str.assign(CurStu->getStuID());
-        }
-        if (checkID(str) == false)
-        {
-            cout<<"此学号已存在，请重新输入学号>>";
-            CurStu->setStuID();
-            str.assign(CurStu->getStuID());
-        }
+    while (str.length() != 10)
+    {
+        cout<<"学号长度有误，请重新输入学号>>";
+        cin>>CurStu->getStuID();
+        str.assign(CurStu->getStuID());
+    }
+    if (checkID(str) == false)
+    {
+        cout<<"此学号已存在，请重新输入学号>>";
+        CurStu->setStuID();
+        str.assign(CurStu->getStuID());
+    }
     }
 
     str.assign(CurStu->getName());
@@ -378,19 +354,14 @@ bool StudentList::checkID(string str)
     string ID;
     if (HeadPtr != NULL)
     {
-        CurPtr = HeadPtr;
-        ID.assign(CurPtr->getStuID());
-        for (; (CurPtr->getNext() != NULL) && (ID.assign(CurPtr->getStuID()) != str); CurPtr = CurPtr->getNext()) ;
+        for (CurPtr = HeadPtr; (CurPtr->getNext() != NULL) && (ID.assign(CurPtr->getStuID()) != str); CurPtr = CurPtr->getNext()) ;
         if (ID != str)
             return true;
         else
             return false;
     }
     else
-    {
-        cout<<"head null"<<endl;
         return true;
-    }
 }
 
 void StudentList::searchID()
@@ -412,7 +383,6 @@ void StudentList::searchID()
     }
 }
 
-//各种查找学生信息函数的定义
 void StudentList::searchName()
 {
     int i=0;
@@ -477,7 +447,6 @@ void StudentList::searchMath()
         while (CurPtr != NULL);
     }
 }
-
 void StudentList::searchEng()
 {
     if (HeadPtr == NULL)
@@ -494,7 +463,6 @@ void StudentList::searchEng()
         while (CurPtr != NULL);
     }
 }
-
 void StudentList::searchPhy()
 {
     if (HeadPtr == NULL)
@@ -511,8 +479,6 @@ void StudentList::searchPhy()
         while (CurPtr != NULL);
     }
 }
-
-//操作菜单函数的定义
 void StudentList::menuList()
 {
     char choice, i = 1, j;
@@ -563,7 +529,6 @@ void StudentList::menuList()
     }
 }
 
-//欢迎、退出、关于界面函数的定义
 void welcome()
 {
     cout<<"=======\t=======\t=======\t=======\t=======\t=======\t=======\t=======\t======="<<endl;
