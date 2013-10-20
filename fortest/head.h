@@ -17,6 +17,13 @@ public:
     int getPhyscore();
     Student * getNext();
 
+    void setStuID();
+    void setName();
+    void setGclass();
+    void setMathScore();
+    void setEnglishScore();
+    void setPhyScore();
+
     void getMath();
     void getEnglish();
     void getPhy();
@@ -46,6 +53,8 @@ public:
     void deleteStu();
     void sortStu();
 
+    void checkStu(Student * CurStu);
+    bool checkID(std::string str);
     void searchID();
     void searchName();
     void searchGclass();

@@ -17,43 +17,6 @@ void Student::setData()
     cout<<"录入学生信息:"<<endl;
     cout<<"请按顺序输入学号、姓名、班级(如: (12)信计1)、数学成绩、英语成绩、体育成绩，各项用空格隔开"<<endl<<">>";
     cin>>stuID>>name>>gclass>>mathScore>>englishScore>>phyScore>>setiosflags(ios_base::unitbuf);
-
-    str.assign(stuID);
-    while (str.length() != 10)
-    {
-        cout<<"学号长度有误，请重新输入学号>>";
-        cin>>stuID;
-        str.assign(stuID);
-    }
-    str.assign(name);
-    while((str.length() < 1) || (str.length() > 20))
-    {
-        cout<<"姓名过长或未输入，请重新输入姓名>>";
-        cin>>name;
-        str.assign(name);
-    }
-    str.assign(gclass);
-    while((str.length() < 1) || (str.length() > 20))
-    {
-        cout<<"班级输入过长或未输入，请重新输入班级>>";
-        cin>>gclass;
-        str.assign(gclass);
-    }
-    while((mathScore < 0) || (mathScore > 100))
-    {
-        cout<<"数学成绩范围有误，请重新输入数学成绩>>";
-        cin>>mathScore;
-    }
-    while((englishScore < 0) || (englishScore > 100))
-    {
-        cout<<"英语成绩范围有误，请重新输入英语成绩>>";
-        cin>>englishScore;
-    }
-    while((phyScore < 0) || (phyScore > 100))
-    {
-        cout<<"体育成绩范围有误，请重新输入体育成绩>>";
-        cin>>phyScore;
-    }
 }
 void Student::setNext(Student * ptr)
 {
@@ -91,6 +54,31 @@ Student * Student::getNext()
 {
     return next;
 }
+void Student::setStuID()
+{
+    cin>>stuID;
+}
+void Student::setName()
+{
+    cin>>name;
+}
+void Student::setGclass()
+{
+    cin>>gclass;
+}
+void Student::setMathScore()
+{
+    cin>>mathScore;
+}
+void Student::setEnglishScore()
+{
+    cin>>englishScore;
+}
+void Student::setPhyScore()
+{
+    cin>>phyScore;
+}
+
 void Student::getMath()
 {
     cout<<mathScore<<"\t"<<name<<"\t"<<gclass<<"\t"<<stuID<<endl;
@@ -165,8 +153,11 @@ void StudentList::saveToFile()
 }
 void StudentList::addStu()
 {
+    string str;
     Student * newStuPtr = new Student;
     newStuPtr->setData();
+    checkStu(newStuPtr);
+    cout<<str<<endl;
     if (HeadPtr == NULL)
         HeadPtr = newStuPtr;
     else
@@ -191,6 +182,7 @@ void StudentList::updateStu()
         if(ID == uID)
         {
             CurPtr->setData();
+            checkStu(CurPtr);
             cout<<"更新信息成功"<<endl;
         }
         else
@@ -299,6 +291,72 @@ void StudentList::sortStu()
         cout<<"体育: "<<"\t"<<phyMax<<"\t"<<phyFailedCount<<endl;
     }
 
+}
+
+void StudentList::checkStu(Student * CurStu)
+{
+    string str;
+    str.assign(CurStu->getStuID());
+    while((str.length() != 10) || (checkID(str) == false))
+    {
+    while (str.length() != 10)
+    {
+        cout<<"学号长度有误，请重新输入学号>>";
+        cin>>CurStu->getStuID();
+        str.assign(CurStu->getStuID());
+    }
+    if (checkID(str) == false)
+    {
+        cout<<"此学号已存在，请重新输入学号>>";
+        CurStu->setStuID();
+        str.assign(CurStu->getStuID());
+    }
+    }
+
+    str.assign(CurStu->getName());
+    while((str.length() < 1) || (str.length() > 20))
+    {
+        cout<<"姓名过长或未输入，请重新输入姓名>>";
+        CurStu->setName();
+        str.assign(CurStu->getName());
+    }
+    str.assign(CurStu->getGclass());
+    while((str.length() < 1) || (str.length() > 20))
+    {
+        cout<<"班级输入过长或未输入，请重新输入班级>>";
+        CurStu->setGclass();
+        str.assign(CurStu->getGclass());
+    }
+    while((CurStu->getMathScore() < 0) || (CurStu->getMathScore() > 100))
+    {
+        cout<<"数学成绩范围有误，请重新输入数学成绩>>";
+        CurStu->setMathScore();
+    }
+    while((CurStu->getEnglishScore() < 0) || (CurStu->getEnglishScore() > 100))
+    {
+        cout<<"英语成绩范围有误，请重新输入英语成绩>>";
+        CurStu->setEnglishScore();
+    }
+    while((CurStu->getPhyscore() < 0) || (CurStu->getPhyscore() > 100))
+    {
+        cout<<"体育成绩范围有误，请重新输入体育成绩>>";
+        CurStu->setPhyScore();
+    }
+}
+
+bool StudentList::checkID(string str)
+{
+    string ID;
+    if (HeadPtr != NULL)
+    {
+        for (CurPtr = HeadPtr; (CurPtr->getNext() != NULL) && (ID.assign(CurPtr->getStuID()) != str); CurPtr = CurPtr->getNext()) ;
+        if (ID != str)
+            return true;
+        else
+            return false;
+    }
+    else
+        return true;
 }
 
 void StudentList::searchID()
