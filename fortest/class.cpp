@@ -388,8 +388,7 @@ bool StudentList::checkID(string str)
     }
     else
     {
-        cout<<"head null"<<endl;
-        return true;
+         return true;
     }
 }
 
