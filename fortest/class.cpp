@@ -64,12 +64,20 @@ void  Student::getPhy()     //获得物理成绩并显示姓名等其它信息
 }
 
 //以下部分为各种设置学生信息的函数的定义
-void Student::setData()     //录入学生信息
+void Student::setData()     //初次录入学生信息
 {
     string str;
     cout<<"录入学生信息:"<<endl;
-    cout<<"请按顺序输入学号、姓名、班级(如: (12)信计1)、数学成绩、英语成绩、体育成绩，各项用空格隔开"<<endl<<">>";
+    cout<<"请按顺序输入学号、姓名、班级(如: 12信计1)、数学成绩、英语成绩、体育成绩，各项用空格隔开"<<endl<<">>";
     cin>>stuID>>name>>gclass>>mathScore>>englishScore>>phyScore>>setiosflags(ios_base::unitbuf);    //输入数据并清除缓冲区
+}
+
+void Student::udData()     //更改录入学生信息
+{
+    string str;
+    cout<<"更新学生信息:"<<endl;
+    cout<<"请按顺序输入姓名、班级(如: 12信计1)、数学成绩、英语成绩、体育成绩，各项用空格隔开"<<endl<<">>";
+    cin>>name>>gclass>>mathScore>>englishScore>>phyScore>>setiosflags(ios_base::unitbuf);
 }
 
 void Student::setStuID()    //设置学生学号
@@ -119,7 +127,7 @@ StudentList::StudentList()      //构造函数，将指针初始化为空指针
 {
     HeadPtr = NULL;
     CurPtr = NULL;
-    NextPtr = NULL;
+    PrePtr = NULL;
 }
 
 //文件操作函数的定义
@@ -181,7 +189,8 @@ void StudentList::addStu()      //添加学生
 {
     Student * newStuPtr = new Student;      //为新增的学生动态分配内存
     newStuPtr->setData();
-    checkStu(newStuPtr);
+    checkID(newStuPtr);
+    checkInfo(newStuPtr);
     if (HeadPtr == NULL)
     {
         HeadPtr = newStuPtr;
@@ -205,12 +214,14 @@ void StudentList::updateStu()   //更新学生信息
         cout<<"还没有录入任何学生信息!"<<endl;
     else
     {
+        CurPtr = HeadPtr;
+        ID.assign(CurPtr->getStuID());
         for (CurPtr = HeadPtr; (CurPtr->getNext() != NULL) && (ID.assign(CurPtr->getStuID()) != uID); CurPtr = CurPtr->getNext()) ; //查找并定位欲更新信息的学生
 
         if(ID == uID)
         {
-            CurPtr->setData();
-            checkStu(CurPtr);
+            CurPtr->udData();
+            checkInfo(CurPtr);
             cout<<"更新信息成功"<<endl;
         }
         else
@@ -273,20 +284,30 @@ void StudentList::deleteStu()   //删除学生
         cout<<"还没有录入任何学生信息!"<<endl;
     else
     {
-        for (CurPtr = NULL, NextPtr = HeadPtr; (NextPtr->getNext() != NULL) && (ID.assign(NextPtr->getStuID()) !=dID); )    //查找并定位欲删除的学生
+        PrePtr = NULL;
+        CurPtr = HeadPtr;
+        ID.assign(CurPtr->getStuID());
+        for (; (CurPtr->getNext() != NULL) && (ID.assign(CurPtr->getStuID()) != dID);)  //查找并定位欲删除的学生
         {
-            CurPtr = NextPtr;
-            NextPtr = NextPtr->getNext();
+             PrePtr = CurPtr;
+             CurPtr = CurPtr->getNext();
         }
-        if (NextPtr->getStuID() == dID)
+
+        if (CurPtr->getStuID() == dID)
         {
-            if(CurPtr == NULL)
+
+            if((PrePtr == NULL) && (CurPtr->getNext() == NULL))
+                HeadPtr = NULL;
+            else if(PrePtr == NULL)
             {
-                HeadPtr = NextPtr->getNext();
+                HeadPtr = CurPtr->getNext();
             }
             else
-                CurPtr->setNext(NextPtr->getNext());
-            delete NextPtr;         //释放已删除学生节点的内存
+                {
+                            PrePtr->setNext(CurPtr->getNext());
+
+                                    }
+            delete CurPtr;         //释放已删除学生节点的内存
             cout<<"删除成功"<<endl;
         }
         else
@@ -322,60 +343,65 @@ void StudentList::sortStu()     //统计学生信息
 
 }
 
-void StudentList::checkStu(Student * CurStu)    //检查输入的学生信息是否合理，不合理的需要重新输入
+void StudentList::checkInfo(Student * paraStu)    //检查输入的学生信息是否合理，不合理的需要重新输入
 {
     string str;
-    str.assign(CurStu->getStuID());
-    while((str.length() != 10) || (checkID(str) == false))
+    str.assign(paraStu->getName());
+    while((str.length() < 1) || (str.length() > 20))
+    {
+        cout<<"姓名过长或未输入，请重新输入姓名>>";
+        paraStu->setName();
+        str.assign(paraStu->getName());
+    }
+    str.assign(paraStu->getGclass());
+    while((str.length() < 1) || (str.length() > 20))
+    {
+        cout<<"班级输入过长或未输入，请重新输入班级>>";
+        paraStu->setGclass();
+        str.assign(paraStu->getGclass());
+    }
+    while((paraStu->getMathScore() < 0) || (paraStu->getMathScore() > 100))
+    {
+        cout<<"数学成绩范围有误，请重新输入数学成绩>>";
+        paraStu->setMathScore();
+    }
+    while((paraStu->getEnglishScore() < 0) || (paraStu->getEnglishScore() > 100))
+    {
+        cout<<"英语成绩范围有误，请重新输入英语成绩>>";
+        paraStu->setEnglishScore();
+    }
+    while((paraStu->getPhyscore() < 0) || (paraStu->getPhyscore() > 100))
+    {
+        cout<<"体育成绩范围有误，请重新输入体育成绩>>";
+        paraStu->setPhyScore();
+    }
+}
+
+void StudentList::checkID(Student * paraStu)        //检查学号长度是否合理并检查学号是否唯一
+{
+    string str;
+    str.assign(paraStu->getStuID());
+    while((str.length() != 10) || (checkIDuni(paraStu) == false))
     {
         while (str.length() != 10)
         {
             cout<<"学号长度有误，请重新输入学号>>";
-            CurStu->setStuID();
-            str.assign(CurStu->getStuID());
+            paraStu->setStuID();
+            str.assign(paraStu->getStuID());
         }
-        if (checkID(str) == false)
+        if (checkIDuni(paraStu) == false)
         {
             cout<<"此学号已存在，请重新输入学号>>";
-            CurStu->setStuID();
-            str.assign(CurStu->getStuID());
+            paraStu->setStuID();
+            str.assign(paraStu->getStuID());
         }
-    }
-
-    str.assign(CurStu->getName());
-    while((str.length() < 1) || (str.length() > 20))
-    {
-        cout<<"姓名过长或未输入，请重新输入姓名>>";
-        CurStu->setName();
-        str.assign(CurStu->getName());
-    }
-    str.assign(CurStu->getGclass());
-    while((str.length() < 1) || (str.length() > 20))
-    {
-        cout<<"班级输入过长或未输入，请重新输入班级>>";
-        CurStu->setGclass();
-        str.assign(CurStu->getGclass());
-    }
-    while((CurStu->getMathScore() < 0) || (CurStu->getMathScore() > 100))
-    {
-        cout<<"数学成绩范围有误，请重新输入数学成绩>>";
-        CurStu->setMathScore();
-    }
-    while((CurStu->getEnglishScore() < 0) || (CurStu->getEnglishScore() > 100))
-    {
-        cout<<"英语成绩范围有误，请重新输入英语成绩>>";
-        CurStu->setEnglishScore();
-    }
-    while((CurStu->getPhyscore() < 0) || (CurStu->getPhyscore() > 100))
-    {
-        cout<<"体育成绩范围有误，请重新输入体育成绩>>";
-        CurStu->setPhyScore();
     }
 }
 
-bool StudentList::checkID(string str)   //检查学生学号是否唯一
+bool StudentList::checkIDuni(Student * paraStu)   //检查学生学号是否唯一
 {
-    string ID;
+    string ID, str;
+    str.assign(paraStu->getStuID());
     if (HeadPtr != NULL)
     {
         CurPtr = HeadPtr;
@@ -388,7 +414,7 @@ bool StudentList::checkID(string str)   //检查学生学号是否唯一
     }
     else
     {
-         return true;
+        return true;
     }
 }
 
@@ -401,7 +427,7 @@ void StudentList::searchID()    //按学号查询
         cout<<"还没有录入任何学生信息!"<<endl;
     else
     {
-        cout<<"学号\t\t"<<"姓名\t"<<"班级\t\t"<<"数学\t"<<"英语\t"<<"体育"<<endl;
+        cout<<"学号\t\t"<<"姓名\t"<<"班级\t"<<"数学\t"<<"英语\t"<<"体育"<<endl;
         for (CurPtr = HeadPtr; (CurPtr->getNext() != NULL) && (ID.assign(CurPtr->getStuID()) != sID); CurPtr = CurPtr->getNext()) ;     //查找学号
 
         if(CurPtr != NULL)
@@ -422,9 +448,19 @@ void StudentList::searchName()  //按姓名查询
         cout<<"还没有录入任何学生信息!"<<endl;
     else
     {
-        cout<<"学号\t\t"<<"姓名\t"<<"班级\t\t"<<"数学\t"<<"英语\t"<<"体育"<<endl;
-        for (CurPtr = HeadPtr; (CurPtr->getNext() != NULL); CurPtr = CurPtr->getNext())     //将所有该名字的学生信息都输出出来
+        cout<<"学号\t\t"<<"姓名\t"<<"班级\t"<<"数学\t"<<"英语\t"<<"体育"<<endl;
+        CurPtr = HeadPtr;
+        Name.assign(CurPtr->getName());
+
+        //将所有该名字的学生信息都输出出来
+        if(Name.assign(CurPtr->getName()) == sName)
+            {
+                CurPtr->getData();
+                i++;
+            }
+        for (;(CurPtr->getNext() != NULL);)
         {
+            CurPtr = CurPtr->getNext();
             if(Name.assign(CurPtr->getName()) == sName)
             {
                 CurPtr->getData();
@@ -440,13 +476,13 @@ void StudentList::searchGclass()    //按班级查询
 {
     int i=0;
     string sGclass, Gclass;
-    cout<<"请输入要查找的班级(如: (12)信计1): ";
+    cout<<"请输入要查找的班级(如: 12信计1): ";
     cin>>sGclass>>setiosflags(ios_base::unitbuf);
     if (HeadPtr == NULL)
         cout<<"还没有录入任何学生信息!"<<endl<<endl;
     else
     {
-        cout<<"学号\t\t"<<"姓名\t"<<"班级\t\t"<<"数学\t"<<"英语\t"<<"体育"<<endl;
+        cout<<"学号\t\t"<<"姓名\t"<<"班级\t"<<"数学\t"<<"英语\t"<<"体育"<<endl;
         for (CurPtr = HeadPtr; (CurPtr != NULL); CurPtr = CurPtr->getNext())        //将所有在该班级的学生信息都输出出来
         {
             if(Gclass.assign(CurPtr->getGclass()) == sGclass)
@@ -466,7 +502,7 @@ void StudentList::searchMath()      //查看数学成绩
         cout<<"还没有录入任何成绩信息!"<<endl;
     else
     {
-        cout<<"数学"<<"\t"<<"姓名"<<"\t"<<"班级"<<"\t\t"<<"学号"<<endl;
+        cout<<"数学"<<"\t"<<"姓名"<<"\t"<<"班级"<<"\t"<<"学号"<<endl;
         CurPtr = HeadPtr;
         do
         {
@@ -483,7 +519,7 @@ void StudentList::searchEng()       //查看英语成绩
         cout<<"还没有录入任何成绩信息!"<<endl;
     else
     {
-        cout<<"英语"<<"\t"<<"姓名"<<"\t"<<"班级"<<"\t\t"<<"学号"<<endl;
+        cout<<"英语"<<"\t"<<"姓名"<<"\t"<<"班级"<<"\t"<<"学号"<<endl;
         CurPtr = HeadPtr;
         do
         {
@@ -500,7 +536,7 @@ void StudentList::searchPhy()       //查看物理成绩
         cout<<"还没有录入任何成绩信息!"<<endl;
     else
     {
-        cout<<"体育"<<"\t"<<"姓名"<<"\t"<<"班级"<<"\t\t"<<"学号"<<endl;
+        cout<<"体育"<<"\t"<<"姓名"<<"\t"<<"班级"<<"\t"<<"学号"<<endl;
         CurPtr = HeadPtr;
         do
         {

@@ -20,7 +20,8 @@ public:
     void getPhy();              //获得物理成绩并显示姓名等其它信息
 
     //以下部分为各种设置学生信息的函数
-    void setData();             //录入学生信息
+    void setData();             //初次录入学生信息
+    void udData();              //更改学生信息
     void setStuID();            //设置学生学号
     void setName();             //设置学生姓名
     void setGclass();           //设置学生班级
@@ -61,8 +62,9 @@ public:
     void searchStu();           //查找学生
     void deleteStu();           //删除学生
     void sortStu();             //统计各科最高分和不及格人数
-    void checkStu(Student * CurStu);    //检查输入的学生信息是否合理，不合理的需要重新输入
-    bool checkID(std::string str);      //检查学生学号是否唯一
+    void checkInfo(Student * paraStu);    //检查输入的学生信息是否合理，不合理的需要重新输入
+    void checkID(Student * paraStu);      //检查学生学号长度是否合理并且学号是否唯一
+    bool checkIDuni(Student * paraStu);   //检查学生学号是否唯一
 
     //各种查找学生信息函数
     void searchID();            //按学号查找
@@ -79,7 +81,7 @@ private:
     //链表的头指针和用于对结点操作的指针
     Student * HeadPtr;          //链表头指针
     Student * CurPtr;           //当前指针。操作学生及学生信息时用到
-    Student * NextPtr;          //下一个指针。操作学生及学生信息时用到
+    Student * PrePtr;          //下一个指针。操作学生及学生信息时用到
 };
 
 //欢迎、退出、关于界面
